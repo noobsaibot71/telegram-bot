@@ -1,0 +1,31 @@
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
+# Função para enviar a mensagem de boas-vindas
+def welcome_message(update: Update, context):
+    """Envia uma mensagem de boas-vindas com botão de pagamento"""
+    # O botão com o link de compra
+    keyboard = [[InlineKeyboardButton("Comprar Conteúdo 🔥", url="https://sualoja.com/compra")]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    # Envia a mensagem
+    update.message.reply_text(
+        "🎉 Bem-vindo ao grupo! Para acessar nosso conteúdo exclusivo, clique no botão abaixo e faça o pagamento.", 
+        reply_markup=reply_markup
+    )
+
+# Função principal do bot
+def main():
+    # Coloque seu token aqui (pegue do BotFather)
+    updater = Updater("SEU_TOKEN_AQUI", use_context=True)
+    dispatcher = updater.dispatcher
+
+    # Detectar quando alguém entra no grupo
+    dispatcher.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome_message))
+    
+    # Inicia o bot
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
